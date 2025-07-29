@@ -1,0 +1,62 @@
+/* src/design/Form.css */
+body{
+  height: 100vh;
+  width: 100vw;
+  background-color: #333;
+}
+.form-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 30px;
+  
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #1c293b;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.form button:hover {
+  background-color: #0d1b2a;
+}
+
+.message {
+  margin-top: 12px;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  background-color: #007bff;
+  border-radius: 5px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.message:empty {
+  display: none;
+}
