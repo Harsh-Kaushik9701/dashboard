@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../Services/firebase';
-import '../design/Login.css';
+import { db } from '../Services/firebase';
+import { collection, addDoc } from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import '../design/Adduser.css';
+
+// Secondary Firebase App
+const secondaryApp = initializeApp({
+  apiKey: "AIzaSyDzKe3EBj0dyeFRbgBo6CWr-u2R3565mPI",
+  authDomain: "dashboard-app-6906b.firebaseapp.com",
+  projectId: "dashboard-app-6906b",
+}, "Secondary");
+
+const secondaryAuth = getAuth(secondaryApp);
 
 const AddUser = () => {
   const [name, setName] = useState('');
@@ -11,19 +21,23 @@ const AddUser = () => {
   const [position, setPosition] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleAddUser = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
 
     try {
-      
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        secondaryAuth,
+        email,
+        password
+      );
 
-      
-      await updateProfile(userCredential.user, { displayName: name });
+      const uid = userCredential.user.uid;
 
-      
-      await setDoc(doc(db, 'users', userCredential.user.uid), {
+      await signOut(secondaryAuth);
+
+      await addDoc(collection(db, 'users'), {
+        uid,
         name,
         email,
         position,
@@ -36,8 +50,9 @@ const AddUser = () => {
       setPassword('');
       setPosition('');
     } catch (error) {
+      console.error('Error:', error.message);
       if (error.code === 'auth/email-already-in-use') {
-        setMessage('❌ Email already registered. Please use a different email.');
+        setMessage('❌ Email is already registered.');
       } else {
         setMessage(`❌ ${error.message}`);
       }
@@ -45,46 +60,40 @@ const AddUser = () => {
   };
 
   return (
-    <div className="login-wrapper">
-    <div className="login-container">
+    <div className="form-container">
       <h2>Add New User</h2>
-      <form onSubmit={handleAddUser}>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Full Name"
+          placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-        /><br />
+        />
         <input
           type="email"
-          placeholder="Email Address"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-        /><br />
+        />
         <input
           type="password"
-          placeholder="Password (min 6 characters)"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-        /><br />
+        />
         <input
           type="text"
-          placeholder="Position (e.g., Developer)"
+          placeholder="Position"
           value={position}
           onChange={(e) => setPosition(e.target.value)}
           required
-        /><br />
+        />
         <button type="submit">Add User</button>
-        {message && (
-          <p style={{ marginTop: '10px', color: message.startsWith('✅') ? 'green' : 'red' }}>
-            {message}
-          </p>
-        )}
       </form>
-    </div>
+      {message && <p className="message">{message}</p>}
     </div>
   );
 };

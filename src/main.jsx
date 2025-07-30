@@ -36,7 +36,7 @@ import Signup from './pages/Signup';
 //           }
 //         />
 //         <Route
-//           path="/users"
+//           path="/dashboard/userlist"
 //           element={
 //             <ProtectedRoute>
 //               <UserList />
@@ -44,7 +44,7 @@ import Signup from './pages/Signup';
 //           }
 //         />
 //         <Route
-//           path="/user/:id"
+//           path="/dashboard/userdetails"
 //           element={
 //             <ProtectedRoute>
 //               <UserDetails />

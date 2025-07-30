@@ -1,9 +1,11 @@
-/* UserDetails.css */
+
 
 body {
   background-color: #f4f4f4;
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  width: 100vw;
 }
 
 .user-details-container {
