@@ -1,49 +1,55 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../Services/firebase';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../design/Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const clearFlag = params.get('clear');
-
-    if (clearFlag === '1') {
+    // 🧹 Clear fields if coming from logout
+    const clearFields = new URLSearchParams(location.search).get('clear');
+    if (clearFields === '1') {
       setEmail('');
       setPassword('');
-    } else {
-      const savedEmail = localStorage.getItem('email');
-      const savedPassword = localStorage.getItem('password');
-      if (savedEmail && savedPassword) {
-        setEmail(savedEmail);
-        setPassword(savedPassword);
-      }
     }
-  }, []);
+  }, [location]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrorMsg('');
 
     if (!email || !password) {
-      setErrorMsg('Please fill all fields.');
+      setErrorMsg('Please fill in both fields.');
       return;
     }
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
+
+      
       localStorage.setItem('email', email);
       localStorage.setItem('password', password);
+      localStorage.setItem('token', 'user-authenticated');
+
       navigate('/dashboard');
     } catch (error) {
-      console.error('Login error:', error.message);
-      setErrorMsg('Invalid credentials. Try again.');
+      console.error('Login failed:', error.code);
+
+     
+      if (
+        error.code === 'auth/user-not-found' ||
+        error.code === 'auth/wrong-password'
+      ) {
+        setErrorMsg('Invalid email or password.');
+      } else {
+        setErrorMsg('Incorrect Credentials. Try again.');
+      }
     }
   };
 
@@ -71,7 +77,7 @@ const Login = () => {
         <button type="submit">Login</button>
 
         <p className="signup-link">
-          Don’t have an account? <Link to="/signup">Sign up</Link>
+          Don’t have an account? <a href="/signup">Sign up</a>
         </p>
       </form>
     </div>

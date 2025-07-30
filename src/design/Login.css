@@ -52,9 +52,11 @@
 .login-container p {
   margin-top: 10px;
   font-size: 14px;
+  color: black;
 }
 
 .signup-link {
+  color: #333;
   margin-top: 20px;
   font-size: 14px;
 }

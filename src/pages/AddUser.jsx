@@ -16,13 +16,13 @@ const AddUser = () => {
     setMessage('');
 
     try {
-      // ✅ Create user with Firebase Auth
+      
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      // ✅ Update display name
+      
       await updateProfile(userCredential.user, { displayName: name });
 
-      // ✅ Save user in Firestore
+      
       await setDoc(doc(db, 'users', userCredential.user.uid), {
         name,
         email,

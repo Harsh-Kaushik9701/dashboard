@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../Services/firebase';
-import '../design/UserList.css'; // Optional CSS import
+import '../design/UserList.css'; 
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
