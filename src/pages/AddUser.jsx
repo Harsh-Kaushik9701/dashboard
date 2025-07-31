@@ -5,7 +5,6 @@ import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 import { initializeApp } from 'firebase/app';
 import '../design/Adduser.css';
 
-// Secondary Firebase App
 const secondaryApp = initializeApp({
   apiKey: "AIzaSyDzKe3EBj0dyeFRbgBo6CWr-u2R3565mPI",
   authDomain: "dashboard-app-6906b.firebaseapp.com",

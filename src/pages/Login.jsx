@@ -12,7 +12,7 @@ const Login = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // 🧹 Clear fields if coming from logout
+    
     const clearFields = new URLSearchParams(location.search).get('clear');
     if (clearFields === '1') {
       setEmail('');

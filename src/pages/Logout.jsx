@@ -14,7 +14,6 @@ const Logout = () => {
     try {
       await signOut(auth);
 
-      // Clear localStorage items
       localStorage.removeItem('email');
       localStorage.removeItem('password');
       localStorage.removeItem('signupEmail');
